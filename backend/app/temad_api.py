@@ -1,11 +1,11 @@
 from fastapi import FastAPI, File, UploadFile
-from branje_kalibra_api import ImageProcessor
+from fastapi.middleware.cors import CORSMiddleware
+
 import cv2
 import numpy as np
 import base64
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from app.branje_kalibra_api import ImageProcessor
 
 origins = ["*"]
 
@@ -26,8 +26,6 @@ def test():
 #recive an image and return shape
 @app.post("/process")
 def predict(image: UploadFile = File(...)):
-
-
     #read image
     print("Got image")
 

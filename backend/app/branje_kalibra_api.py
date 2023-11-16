@@ -155,10 +155,10 @@ class ImageProcessor:
         skin_window_corrected = np.uint8(skin_window_corrected) # convert to uint8 for visualization/procesing
 
         # display the results
-        _, ax = plt.subplots(1, 4, figsize=(20, 10))
-        ax[0].imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-        ax[1].imshow(cv2.cvtColor(corrected_image_with_markers, cv2.COLOR_BGR2RGB))
-        ax[2].imshow(skin_window_corrected)     
+        #_, ax = plt.subplots(1, 4, figsize=(20, 10))
+        #ax[0].imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        #ax[1].imshow(cv2.cvtColor(corrected_image_with_markers, cv2.COLOR_BGR2RGB))
+        #ax[2].imshow(skin_window_corrected)     
 
         # black out hairs and pigment
         clear_skin_window, hair_mask, pigment_mask = self.remove_hair_and_pigment(skin_window_corrected)
@@ -169,7 +169,7 @@ class ImageProcessor:
         skin_pixels_float = clear_skin_window_float[np.all(clear_skin_window_float != [0, 0, 0], axis=2)]
         self.skin_pixels_float = skin_pixels_float / 255  
 
-        ax[3].imshow(clear_skin_window)        
+        #ax[3].imshow(clear_skin_window)        
 
         self.clear_skin = clear_skin_window.copy()                 
 

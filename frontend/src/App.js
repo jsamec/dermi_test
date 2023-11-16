@@ -30,13 +30,24 @@ function App() {
     try {
       // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
 
-      let API_ENDPOINT = 'http://localhost:8000/process'
+      //let API_ENDPOINT = 'http://localhost:8000/api/process'
+      let API_ENDPOINT = '/api/process'
 
+      console.log(formData);
+
+      //allow cors
       const response = await fetch(API_ENDPOINT, {
         method: 'POST',
         body: formData,
-        mode: 'cors',
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        }
       });
+
+      console.log("got response");
+
+      response.headers.forEach(console.log);
+
 
       const data = await response.json();
       console.log(data);
@@ -60,7 +71,7 @@ function App() {
 
   return (
     <div>
-      <h1>Dermi Web</h1>
+      <h1>TEMAD</h1>
       <div style={{ maxWidth: '100%' }}>
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUpload}>Upload</button>
@@ -75,14 +86,15 @@ function App() {
           &nbsp;
           <strong> b: </strong>{b2}
         </p>}
-        <br></br>
         {r && g && b &&
+          <div>
           <div style={{
             margin: '0 auto',
-            backgroundColor: `rgb(${r},${g},${b})`, width: '100px', height: '50px', 
+            backgroundColor: `rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`, width: '100px', height: '50px', 
             border: '2px solid black',
             borderRadius: '5px',
-          }}>
+          }}></div>
+          <p style={{fontSize: '15px'}} >R: {Math.round(r)} G: {Math.round(g)} B: {Math.round(b)}</p>
           </div>
         }
       </div>
