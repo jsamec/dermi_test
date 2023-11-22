@@ -10,6 +10,8 @@ function App() {
   const [L, setL] = useState('');
   const [a, setA] = useState('');
   const [b2, setB2] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [imageURL, setImageURL] = useState('');
 
@@ -33,6 +35,8 @@ function App() {
       //let API_ENDPOINT = 'http://localhost:8000/api/process'
       let API_ENDPOINT = '/api/process'
 
+      setLoading(true);
+
       console.log(formData);
 
       //allow cors
@@ -47,6 +51,7 @@ function App() {
       console.log("got response");
 
       response.headers.forEach(console.log);
+
 
 
       const data = await response.json();
@@ -64,6 +69,24 @@ function App() {
         setImageURL(`data:image/jpeg;base64, ${data.returnImage}`)
       }
 
+      setLoading(false);
+
+      if (data.EI == 0) {
+        alert("Error processing image. Please try again/use a different image.");
+        setSuccess(false);
+        //make body empty
+        setEI('');
+        setR('');
+        setG('');
+        setB('');
+        setL('');
+        setA('');
+        setB2('');
+
+      }else{
+        setSuccess(true);
+      }
+
     } catch (error) {
       console.error('Error uploading file:', error);
     }
@@ -77,16 +100,17 @@ function App() {
         <button onClick={handleUpload}>Upload</button>
       </div>
 
-      <div id='results'>
-        {EI && <p><strong>EI:</strong> {EI}</p>}
-        {L && a && b2 && <p>
+      <div id='results' class='main_div'>
+        {loading && <p>Loading...</p>}
+        {EI && success && <p><strong>EI:</strong> {EI}</p>}
+        {L && a && b2 && success && <p>
           <strong>L: </strong>{L}  
           &nbsp;
           <strong> a: </strong>{a} 
           &nbsp;
           <strong> b: </strong>{b2}
         </p>}
-        {r && g && b &&
+        {r && g && b && success && 
           <div>
           <div style={{
             margin: '0 auto',
@@ -98,7 +122,7 @@ function App() {
           </div>
         }
       </div>
-      {imageURL &&<img src={imageURL} alt="Result" style={{ maxWidth: '80%' }} />}
+      {imageURL && success && <img src={imageURL} alt="Result" style={{ maxWidth: '80%' }} />}
     </div>
   );
 }

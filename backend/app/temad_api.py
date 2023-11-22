@@ -7,6 +7,8 @@ import base64
 
 from app.branje_kalibra_api import ImageProcessor
 
+print("Starting API")
+
 origins = ["*"]
 
 app = FastAPI()
@@ -27,13 +29,20 @@ def test():
 @app.post("/process")
 def predict(image: UploadFile = File(...)):
     #read image
-    print("Got image")
+    print("Got image from client")
 
     image = cv2.imdecode(np.fromstring(image.file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
 
     #process image
-    ip = ImageProcessor()
-    ip.start(image)
+    try:
+        ip = ImageProcessor()
+        ip.start(image)
+    except Exception as e:
+        print(e)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = cv2.imencode('.jpg', image)[1].tobytes()
+        image = base64.b64encode(image)
+        return {"EI": 0, "returnImage": image, "r": 0, "g": 0, "b": 0, "l": 0, "a": 0, "b2": 0, "error": "Error processing image"}
     print(ip.EI)
 
     cv2.imwrite('test.jpg', ip.clear_skin)

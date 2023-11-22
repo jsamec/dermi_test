@@ -127,6 +127,8 @@ class ImageProcessor:
     circle_median_colors = {}
 
     def start(self, image):
+        self.clear_data()
+
         # deskew the image using markers and homography
         corrected_image = self.correct_image(image)
         corrected_image = cv2.GaussianBlur(corrected_image, (5, 5), 0)
@@ -275,6 +277,12 @@ class ImageProcessor:
     def clear_data(self):
         self.detected_corners = []
         self.original_corners = []
+        self.corrected_median_pixel = []
+        self.corrected_median_pixel_CIELAB = []
+        self.clear_skin = None
+        self.skin_pixels = None
+        self.EI = 0
+        self.skin_pixels_float = None
 
     def correct_image(self, image):
         (corners, ids) = self.detect_markers(image)
